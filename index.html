@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Probabilidades DUDO</title>
+    <style>
+        /* Contenido de style.css de dist */
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            font-size: 16px; 
+        }
+        .container { 
+            text-align: center; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            max-width: 100%; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        h1 { 
+            color: #333; 
+            margin-bottom: 15px; 
+            font-size: 1.5em;
+        }
+        .dice-input { 
+            font-size: 20px; 
+            width: 60px; 
+            text-align: center; 
+            border: 2px solid #ddd; 
+            border-radius: 5px; 
+            padding: 5px;
+        }
+        .counts { 
+            display: flex; 
+            justify-content: space-around; 
+            margin: 15px 0; 
+            flex-wrap: wrap; 
+        }
+        .count-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin: 5px; 
+            min-width: 60px;
+        }
+        .label { 
+            font-weight: bold; 
+            margin-bottom: 3px; 
+            font-size: 0.9em;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .count-input { 
+            font-size: 16px; 
+            width: 40px; 
+            text-align: center; 
+            border: 1px solid #ddd; 
+            border-radius: 3px; 
+            padding: 2px;
+            margin: 0 2px;
+            -webkit-appearance: none; 
+        }
+        .btn-plus, .btn-minus {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+        .btn-minus { background: #f44336; }
+        .btn-plus:hover, .btn-minus:hover { opacity: 0.8; }
+        .current-roll { 
+            margin: 15px 0; 
+            font-size: 16px; 
+        }
+        .dice-display { 
+            font-size: 30px; 
+            color: #ff4500; 
+            margin: 0 5px; 
+        }
+        .calculate-btn { 
+            background-color: #4CAF50; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            margin: 10px; 
+            width: 100%;
+            max-width: 200px;
+        }
+        .calculate-btn:hover { 
+            background-color: #45a049; 
+        }
+        .probability { 
+            font-size: 28px; 
+            font-weight: bold; 
+            color: #333; 
+            margin-top: 15px; 
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 5px;
+            display: none; 
+        }
+        @media (max-width: 480px) {
+            .counts { justify-content: center; }
+            .count-item { margin: 5px 10px; }
+            h1 { font-size: 1.2em; }
+            .probability { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Cálculo de probabilidades DUDO</h1>
+        
+        <div>
+            <label>Dados en juego: </label>
+            <div class="input-group">
+                <button class="btn-minus" onclick="changeValue('numDice', -1)">-</button>
+                <input type="number" id="numDice" class="dice-input" value="24" min="1" max="100">
+                <button class="btn-plus" onclick="changeValue('numDice', 1)">+</button>
+            </div>
+        </div>
+        
+        <div class="counts">
+            <div class="count-item">
+                <span class="label">Ases</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('aces', -1)">-</button>
+                    <input type="number" id="aces" class="count-input" value="1" min="0">
+                    <button class="btn-plus" onclick="changeValue('aces', 1)">+</button>
+                </div>
+            </div>
+            <div class="count-item">
+                <span class="label">Tontos</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('fools', -1)">-</button>
+                    <input type="number" id="fools" class="count-input" value="0" min="0">
+                    <button class="btn-plus" onclick="changeValue('fools', 1)">+</button>
+                </div>
+            </div>
+            <div class="count-item">
+                <span class="label">Trenes</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('trains', -1)">-</button>
+                    <input type="number" id="trains" class="count-input" value="0" min="0">
+                    <button class="btn-plus" onclick="changeValue('trains', 1)">+</button>
+                </div>
+            </div>
+            <div class="count-item">
+                <span class="label">Cuadras</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('squares', -1)">-</button>
+                    <input type="number" id="squares" class="count-input" value="2" min="0">
+                    <button class="btn-plus" onclick="changeValue('squares', 1)">+</button>
+                </div>
+            </div>
+            <div class="count-item">
+                <span class="label">Quinas</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('fives', -1)">-</button>
+                    <input type="number" id="fives" class="count-input" value="1" min="0">
+                    <button class="btn-plus" onclick="changeValue('fives', 1)">+</button>
+                </div>
+            </div>
+            <div class="count-item">
+                <span class="label">Cenas</span>
+                <div class="input-group">
+                    <button class="btn-minus" onclick="changeValue('dinners', -1)">-</button>
+                    <input type="number" id="dinners" class="count-input" value="1" min="0">
+                    <button class="btn-plus" onclick="changeValue('dinners', 1)">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="current-roll">
+            <span class="label">Jugada actual</span><br>
+            <div class="input-group" style="margin: 5px;">
+                <button class="btn-minus" onclick="changeValue('claimQuantity', -1)">-</button>
+                <input type="number" id="claimQuantity" class="count-input" value="7" min="1" style="width: 40px; margin: 0 2px;">
+                <button class="btn-plus" onclick="changeValue('claimQuantity', 1)">+</button>
+                <span class="dice-display">🎲</span>
+                <button class="btn-minus" onclick="changeValue('claimFace', -1)">-</button>
+                <input type="number" id="claimFace" class="count-input" value="6" min="1" max="6" style="width: 40px; margin: 0 2px;">
+                <button class="btn-plus" onclick="changeValue('claimFace', 1)">+</button>
+            </div>
+            <span class="label" style="font-size: 12px;">(Cantidad / Pinta)</span>
+        </div>
+        
+        <button class="calculate-btn" onclick="calculateProbability()">Calcular Probabilidad</button>
+        
+        <div id="result" class="probability">
+            Probabilidad: <span id="probValue">81%</span>
+        </div>
+    </div>
+
+    <script>
+        function changeValue(id, delta) {
+            const input = document.getElementById(id);
+            let value = parseInt(input.value) || 0;
+            value = Math.max(input.min || 0, Math.min(input.max || Infinity, value + delta));
+            input.value = value;
+            calculateProbability(); // Recalcula automáticamente al cambiar
+        }
+
+        function calculateProbability() {
+            const numDice = parseInt(document.getElementById('numDice').value) || 24;
+            const counts = {
+                1: parseInt(document.getElementById('aces').value) || 0,
+                2: parseInt(document.getElementById('fools').value) || 0,
+                3: parseInt(document.getElementById('trains').value) || 0,
+                4: parseInt(document.getElementById('squares').value) || 0,
+                5: parseInt(document.getElementById('fives').value) || 0,
+                6: parseInt(document.getElementById('dinners').value) || 0
+            };
+            const claimQuantity = parseInt(document.getElementById('claimQuantity').value) || 7;
+            const claimFace = parseInt(document.getElementById('claimFace').value) || 6;
+            
+            const revealed = Object.values(counts).reduce((a, b) => a + b, 0);
+            const remaining = numDice - revealed;
+            
+            if (remaining < 0) {
+                alert('Error: Dados revelados exceden el total.');
+                return;
+            }
+            
+            let relevantCount = 0;
+            if (claimFace >= 1 && claimFace <= 6) {
+                relevantCount += counts[claimFace];
+                if (claimFace !== 1) relevantCount += counts[1];
+            }
+            
+            const needed = Math.max(0, claimQuantity - relevantCount);
+            
+            if (needed === 0) {
+                document.getElementById('probValue').textContent = '100%';
+                document.getElementById('result').style.display = 'block';
+                return;
+            }
+            
+            const p = (claimFace >= 2) ? 2/6 : 1/6;
+            let prob = 0;
+            for (let k = needed; k <= remaining; k++) {
+                const binom = binomialCoeff(remaining, k);
+                prob += binom * Math.pow(p, k) * Math.pow(1 - p, remaining - k);
+            }
+            
+            const percentage = Math.round(prob * 100);
+            document.getElementById('probValue').textContent = percentage + '%';
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function binomialCoeff(n, k) {
+            if (k > n || k < 0) return 0;
+            if (k > n - k) k = n - k;
+            let res = 1;
+            for (let i = 0; i < k; i++) {
+                res *= (n - i);
+                res /= (i + 1);
+            }
+            return Math.round(res);
+        }
+
+        window.onload = function() {
+            calculateProbability();
+            document.querySelectorAll('input[type=number]').forEach(input => {
+                input.addEventListener('input', calculateProbability);
+            });
+        };
+    </script>
+</body>
+</html>
