@@ -1,12 +1,67 @@
+:root {
+  --bg: #e5e5e5;
+  --panel-bg: #ffffff;
+  --panel-border: #d4d4d4;
+  --panel-shadow: rgba(0, 0, 0, 0.08);
+  --text: #1a1a1a;
+  --text-muted: #666;
+  --text-faint: #999;
+  --cell-bg: #fafafa;
+  --cell-border: #eeeeee;
+  --arrow-bg: #f0f0f0;
+  --arrow-border: #cccccc;
+  --arrow-text: #333333;
+  --arrow-active: #dddddd;
+}
+
+.dark-mode {
+  --bg: #121212;
+  --panel-bg: #1e1e1e;
+  --panel-border: #333333;
+  --panel-shadow: rgba(0, 0, 0, 0.5);
+  --text: #f0f0f0;
+  --text-muted: #b0b0b0;
+  --text-faint: #888888;
+  --cell-bg: #2a2a2a;
+  --cell-border: #3a3a3a;
+  --arrow-bg: #2a2a2a;
+  --arrow-border: #4a4a4a;
+  --arrow-text: #eeeeee;
+  --arrow-active: #3a3a3a;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
-  background: #e5e5e5;
+  background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  color: #1a1a1a;
+  color: var(--text);
   width: 100%;
   height: 100%;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 body { padding: 12px; }
+
+/* Botón de modo oscuro */
+.top-bar {
+  max-width: 1200px;
+  margin: 0 auto 10px auto;
+  display: flex;
+  justify-content: flex-end;
+}
+.theme-toggle {
+  background: var(--panel-bg);
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid #00b8b8;
+  outline-offset: 2px;
+}
 
 .main-container {
   display: grid;
@@ -17,11 +72,12 @@ body { padding: 12px; }
 }
 
 .panel {
-  background: #ffffff;
-  border: 1px solid #d4d4d4;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px var(--panel-shadow);
   padding: 14px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .panel-title {
@@ -29,15 +85,15 @@ body { padding: 12px; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 .panel-num {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--text);
+  color: var(--panel-bg);
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -45,9 +101,21 @@ body { padding: 12px; }
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .panel-full { grid-column: 1 / -1; }
+
+/* Botones de flecha, focus visible para accesibilidad de teclado */
+.arrow-btn, .mini-btn, .face-option, .qty-btn, .theme-toggle {
+  outline-offset: 2px;
+}
+.arrow-btn:focus-visible,
+.mini-btn:focus-visible,
+.face-option:focus-visible,
+.qty-btn:focus-visible {
+  outline: 2px solid #00b8b8;
+}
 
 /* Panel 1: Dados en juego */
 .total-dice-control {
@@ -59,23 +127,24 @@ body { padding: 12px; }
   padding: 10px 0;
 }
 .arrow-btn {
-  background: #f0f0f0;
-  border: 1px solid #ccc;
+  background: var(--arrow-bg);
+  border: 1px solid var(--arrow-border);
   border-radius: 8px;
   font-size: 20px;
   width: 56px;
   height: 34px;
   cursor: pointer;
-  color: #333;
+  color: var(--arrow-text);
   line-height: 1;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease;
 }
-.arrow-btn:active { background: #ddd; }
+.arrow-btn:active { background: var(--arrow-active); }
 .total-number {
   font-size: 52px;
   font-weight: 800;
-  color: #111;
+  color: var(--text);
   line-height: 1;
 }
 
@@ -91,9 +160,10 @@ body { padding: 12px; }
   align-items: center;
   gap: 4px;
   padding: 6px 2px;
-  background: #fafafa;
+  background: var(--cell-bg);
   border-radius: 8px;
-  border: 1px solid #eee;
+  border: 1px solid var(--cell-border);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 .die-icon { font-size: 22px; }
 .mydice-count {
@@ -141,21 +211,54 @@ body { padding: 12px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--arrow-border);
   border-radius: 8px;
-  background: #fafafa;
+  background: var(--cell-bg);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 .face-option.selected {
   background: #00ffff;
   border-color: #00b8b8;
 }
+
+/* Mini gráfico de distribución */
+.dist-chart-wrapper { margin-bottom: 10px; }
+.dist-chart-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  text-align: center;
+  margin-bottom: 4px;
+}
+.dist-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 42px;
+  padding: 0 4px;
+}
+.dist-bar {
+  flex: 1;
+  max-width: 22px;
+  min-height: 2px;
+  background: var(--cell-border);
+  border-radius: 2px 2px 0 0;
+  transition: height 0.2s ease, background-color 0.2s ease;
+}
+.dist-bar.current {
+  background: #00b8b8;
+}
+
 .results-box {
-  border: 1px solid #eee;
+  border: 1px solid var(--cell-border);
   border-radius: 8px;
   padding: 8px 10px;
-  background: #fafafa;
+  background: var(--cell-bg);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 .result-row {
   display: flex;
@@ -171,8 +274,27 @@ body { padding: 12px; }
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
+  transition: background-color 0.2s ease;
 }
-.result-pct { font-weight: 800; font-size: 16px; }
+.result-pct {
+  font-weight: 800;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Insignias de casos límite (imposible / segura) */
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--text);
+  color: var(--panel-bg);
+}
 
 /* Panel 4: Posibles respuestas */
 .responses-grid {
@@ -185,10 +307,11 @@ body { padding: 12px; }
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  background: #fafafa;
-  border: 1px solid #eee;
+  background: var(--cell-bg);
+  border: 1px solid var(--cell-border);
   border-radius: 8px;
   padding: 8px 3px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 .qty-btn {
   border: none;
@@ -199,6 +322,7 @@ body { padding: 12px; }
   padding: 6px 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 .qty-btn:active { filter: brightness(0.92); }
 .resp-die-icon { font-size: 20px; }
@@ -209,24 +333,27 @@ body { padding: 12px; }
   font-weight: 700;
   border-radius: 4px;
   padding: 2px 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 .prob-label {
   font-size: 9px;
   text-transform: uppercase;
-  color: #999;
+  color: var(--text-faint);
   letter-spacing: 0.03em;
 }
 
-/* Sistema de riesgo de 9 colores */
+/* Sistema de riesgo de 9 colores. Se agrega un borde sutil en cada
+   clase para reforzar el contraste de borde contra fondos claros u
+   oscuros, además del contraste de texto ya verificado (AA o superior) */
 .risk-0-10   { background: #580007; color: #ffffff; border: 1px solid #3a0005; }
-.risk-10-20  { background: #90000b; color: #ffffff; }
-.risk-20-30  { background: #d00014; color: #ffffff; }
-.risk-30-40  { background: #ff6f00; color: #ffffff; }
-.risk-40-50  { background: #ffcc00; color: #000000; }
-.risk-50-60  { background: #a3e635; color: #000000; }
-.risk-60-70  { background: #22c55e; color: #ffffff; }
-.risk-70-80  { background: #166534; color: #ffffff; }
-.risk-80-100 { background: #064e3b; color: #ffffff; }
+.risk-10-20  { background: #90000b; color: #ffffff; border: 1px solid #660008; }
+.risk-20-30  { background: #d00014; color: #ffffff; border: 1px solid #99000e; }
+.risk-30-40  { background: #ff6f00; color: #ffffff; border: 1px solid #cc5900; }
+.risk-40-50  { background: #ffcc00; color: #000000; border: 1px solid #cca300; }
+.risk-50-60  { background: #a3e635; color: #000000; border: 1px solid #7fb823; }
+.risk-60-70  { background: #22c55e; color: #ffffff; border: 1px solid #1a9c49; }
+.risk-70-80  { background: #166534; color: #ffffff; border: 1px solid #0f4a26; }
+.risk-80-100 { background: #064e3b; color: #ffffff; border: 1px solid #033227; }
 
 @media (max-height: 450px) and (orientation: landscape) {
   body { padding: 6px; }
@@ -241,6 +368,7 @@ body { padding: 12px; }
   .mini-btn { font-size: 11px; padding: 2px 0; }
   .current-qty { font-size: 30px; }
   .face-option { width: 30px; height: 30px; font-size: 17px; }
+  .dist-chart { height: 26px; }
   .result-row { font-size: 11px; padding: 3px 0; }
   .result-pct { font-size: 13px; }
   .status-dot { width: 10px; height: 10px; }
@@ -248,4 +376,11 @@ body { padding: 12px; }
   .resp-die-icon { font-size: 14px; }
   .prob-row { font-size: 9px; }
   .prob-label { font-size: 7px; }
+  .badge { font-size: 8px; padding: 1px 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -8,15 +8,19 @@
 </head>
 <body>
 
+<div class="top-bar">
+  <button id="themeToggle" class="theme-toggle" aria-pressed="false">🌙 Modo oscuro</button>
+</div>
+
 <div class="main-container">
 
   <!-- Panel 1: Dados en juego -->
   <div class="panel">
     <div class="panel-title"><span class="panel-num">1</span> Dados en juego</div>
     <div class="total-dice-control">
-      <button class="arrow-btn" id="totalUp">⇧</button>
-      <div class="total-number" id="totalDiceDisplay">24</div>
-      <button class="arrow-btn" id="totalDown">⇩</button>
+      <button class="arrow-btn" id="totalUp" aria-label="Aumentar el total de dados en juego">⇧</button>
+      <div class="total-number" id="totalDiceDisplay" aria-live="polite">24</div>
+      <button class="arrow-btn" id="totalDown" aria-label="Disminuir el total de dados en juego">⇩</button>
     </div>
   </div>
 
@@ -30,12 +34,18 @@
   <div class="panel">
     <div class="panel-title"><span class="panel-num">3</span> Jugada actual</div>
     <div class="current-play-control">
-      <button class="arrow-btn" id="qtyUp">⇧</button>
-      <div class="current-qty" id="currentQtyDisplay">8</div>
-      <button class="arrow-btn" id="qtyDown">⇩</button>
+      <button class="arrow-btn" id="qtyUp" aria-label="Aumentar la cantidad de la jugada actual">⇧</button>
+      <div class="current-qty" id="currentQtyDisplay" aria-live="polite">8</div>
+      <button class="arrow-btn" id="qtyDown" aria-label="Disminuir la cantidad de la jugada actual">⇩</button>
     </div>
     <div class="face-selector" id="faceSelector"></div>
-    <div class="results-box">
+
+    <div class="dist-chart-wrapper">
+      <div class="dist-chart-label">Distribución alrededor de la jugada</div>
+      <div class="dist-chart" id="distChart"></div>
+    </div>
+
+    <div class="results-box" aria-live="polite">
       <div class="result-row">
         <span class="label"><span class="status-dot" id="dotSin"></span> Sin tus dados</span>
         <span class="result-pct" id="pctSin">0%</span>
@@ -55,6 +65,9 @@
 
 </div>
 
-<script src="script.js"></script>
+<script src="js/probabilidad.js"></script>
+<script src="js/reglas.js"></script>
+<script src="js/interfaz.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
