@@ -206,20 +206,14 @@ body { padding: 12px; }
   font-weight: 700;
   min-height: 22px;
 }
+/* Los botones de subir/bajar de "Mis dados" ahora comparten la
+   clase .arrow-btn (mismo fondo gris, radio de borde y flecha que
+   "Dados en juego" y "Jugada actual"); aquí solo se ajusta su ancho
+   y alto para que quepan dentro de cada columna angosta */
 .mini-btn {
   width: 100%;
-  border: none;
-  border-radius: 5px;
-  background: var(--arrow-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 0;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.15s ease;
+  height: 30px;
 }
-.mini-btn:active { background: var(--arrow-bg-active); }
 
 /* Panel 3: selector de cara en dos filas de tres columnas, dados grandes */
 .face-selector {
