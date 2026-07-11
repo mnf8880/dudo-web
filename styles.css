@@ -8,10 +8,10 @@
   --text-faint: #999;
   --cell-bg: #fafafa;
   --cell-border: #eeeeee;
-  --arrow-bg: #f0f0f0;
-  --arrow-border: #cccccc;
-  --arrow-text: #333333;
-  --arrow-active: #dddddd;
+  --arrow-bg: #d6d6d6;
+  --arrow-bg-active: #c2c2c2;
+  --arrow-up-color: #1a7f37;
+  --arrow-down-color: #c62828;
 }
 
 .dark-mode {
@@ -24,10 +24,10 @@
   --text-faint: #888888;
   --cell-bg: #2a2a2a;
   --cell-border: #3a3a3a;
-  --arrow-bg: #2a2a2a;
-  --arrow-border: #4a4a4a;
-  --arrow-text: #eeeeee;
-  --arrow-active: #3a3a3a;
+  --arrow-bg: #4a4a4a;
+  --arrow-bg-active: #5a5a5a;
+  --arrow-up-color: #4ade80;
+  --arrow-down-color: #f87171;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,12 +63,27 @@ body { padding: 12px; }
   outline-offset: 2px;
 }
 
+/* Contenedor general: la fila superior y el panel inferior
+   comparten exactamente el mismo ancho */
 .main-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.top-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .top-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .top-row { grid-template-columns: 1fr; }
 }
 
 .panel {
@@ -104,21 +119,38 @@ body { padding: 12px; }
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.panel-full { grid-column: 1 / -1; }
-
-/* Botones de flecha, focus visible para accesibilidad de teclado */
-.arrow-btn, .mini-btn, .face-option, .qty-btn, .theme-toggle {
-  outline-offset: 2px;
-}
+/* Foco visible para accesibilidad de teclado */
 .arrow-btn:focus-visible,
 .mini-btn:focus-visible,
 .face-option:focus-visible,
 .qty-btn:focus-visible {
   outline: 2px solid #00b8b8;
+  outline-offset: 2px;
 }
 
-/* Panel 1: Dados en juego */
-.total-dice-control {
+/* Flechas gruesas de subir/bajar, con relleno verde o rojo,
+   sobre un botón de fondo gris. Se dibujan como triángulos CSS
+   para que el grosor no dependa de la fuente del dispositivo. */
+.arrow-icon {
+  width: 0;
+  height: 0;
+  display: inline-block;
+}
+.arrow-icon.up {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 13px solid var(--arrow-up-color);
+}
+.arrow-icon.down {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 13px solid var(--arrow-down-color);
+}
+.arrow-icon.small.up { border-left-width: 7px; border-right-width: 7px; border-bottom-width: 10px; }
+.arrow-icon.small.down { border-left-width: 7px; border-right-width: 7px; border-top-width: 10px; }
+
+/* Panel 1 y Panel 3: botones grandes de subir/bajar */
+.total-dice-control, .current-play-control {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -128,24 +160,27 @@ body { padding: 12px; }
 }
 .arrow-btn {
   background: var(--arrow-bg);
-  border: 1px solid var(--arrow-border);
+  border: none;
   border-radius: 8px;
-  font-size: 20px;
   width: 56px;
-  height: 34px;
+  height: 36px;
   cursor: pointer;
-  color: var(--arrow-text);
-  line-height: 1;
-  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   -webkit-tap-highlight-color: transparent;
   transition: background-color 0.15s ease;
 }
-.arrow-btn:active { background: var(--arrow-active); }
+.arrow-btn:active { background: var(--arrow-bg-active); }
 .total-number {
   font-size: 52px;
   font-weight: 800;
   color: var(--text);
   line-height: 1;
+}
+.current-qty {
+  font-size: 44px;
+  font-weight: 800;
 }
 
 /* Panel 2: Mis dados */
@@ -158,16 +193,16 @@ body { padding: 12px; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 6px 2px;
+  gap: 5px;
+  padding: 8px 2px;
   background: var(--cell-bg);
   border-radius: 8px;
   border: 1px solid var(--cell-border);
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
-.die-icon { font-size: 22px; }
+.die-icon { font-size: 34px; }
 .mydice-count {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   min-height: 22px;
 }
@@ -175,44 +210,33 @@ body { padding: 12px; }
   width: 100%;
   border: none;
   border-radius: 5px;
-  font-size: 14px;
-  padding: 3px 0;
-  cursor: pointer;
-  color: #fff;
-  -webkit-tap-highlight-color: transparent;
-}
-.mini-btn.up { background: #22a559; }
-.mini-btn.down { background: #d0021b; }
-.mini-btn:active { filter: brightness(0.9); }
-
-/* Panel 3: Jugada actual */
-.current-play-control {
+  background: var(--arrow-bg);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 6px 0 12px 0;
-}
-.current-qty {
-  font-size: 44px;
-  font-weight: 800;
-}
-.face-selector {
-  display: flex;
   justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin: 10px 0;
+  padding: 5px 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease;
+}
+.mini-btn:active { background: var(--arrow-bg-active); }
+
+/* Panel 3: selector de cara en dos filas de tres columnas, dados grandes */
+.face-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
+  margin: 12px 0;
 }
 .face-option {
-  font-size: 24px;
-  width: 42px;
-  height: 42px;
+  font-size: 38px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--arrow-border);
-  border-radius: 8px;
+  border: 1px solid var(--arrow-bg);
+  border-radius: 10px;
   background: var(--cell-bg);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -267,6 +291,9 @@ body { padding: 12px; }
   padding: 5px 0;
   font-size: 14px;
 }
+.result-row + .result-row {
+  border-top: 1px solid var(--cell-border);
+}
 .result-row .label { display: flex; align-items: center; gap: 8px; }
 .status-dot {
   width: 14px;
@@ -306,7 +333,7 @@ body { padding: 12px; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   background: var(--cell-bg);
   border: 1px solid var(--cell-border);
   border-radius: 8px;
@@ -325,21 +352,18 @@ body { padding: 12px; }
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 .qty-btn:active { filter: brightness(0.92); }
-.resp-die-icon { font-size: 20px; }
+.resp-die-icon { font-size: 30px; }
 .prob-row {
   width: 100%;
   text-align: center;
   font-size: 12px;
   font-weight: 700;
   border-radius: 4px;
-  padding: 2px 0;
+  padding: 3px 0;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-.prob-label {
-  font-size: 9px;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  letter-spacing: 0.03em;
+.prob-row + .prob-row {
+  margin-top: 2px;
 }
 
 /* Sistema de riesgo de 9 colores. Se agrega un borde sutil en cada
@@ -358,24 +382,26 @@ body { padding: 12px; }
 @media (max-height: 450px) and (orientation: landscape) {
   body { padding: 6px; }
   .main-container { gap: 8px; }
+  .top-row { gap: 8px; }
   .panel { padding: 8px; }
   .panel-title { font-size: 11px; margin-bottom: 6px; }
   .panel-num { width: 16px; height: 16px; font-size: 9px; }
   .total-number { font-size: 34px; }
-  .arrow-btn { width: 44px; height: 26px; font-size: 16px; }
-  .die-icon { font-size: 16px; }
+  .arrow-btn { width: 44px; height: 28px; }
+  .arrow-icon.up { border-left-width: 6px; border-right-width: 6px; border-bottom-width: 9px; }
+  .arrow-icon.down { border-left-width: 6px; border-right-width: 6px; border-top-width: 9px; }
+  .die-icon { font-size: 22px; }
   .mydice-count { font-size: 14px; min-height: 16px; }
-  .mini-btn { font-size: 11px; padding: 2px 0; }
   .current-qty { font-size: 30px; }
-  .face-option { width: 30px; height: 30px; font-size: 17px; }
+  .face-selector { gap: 5px; }
+  .face-option { height: 40px; font-size: 24px; }
   .dist-chart { height: 26px; }
   .result-row { font-size: 11px; padding: 3px 0; }
   .result-pct { font-size: 13px; }
   .status-dot { width: 10px; height: 10px; }
   .qty-btn { font-size: 13px; padding: 3px 0; }
-  .resp-die-icon { font-size: 14px; }
+  .resp-die-icon { font-size: 18px; }
   .prob-row { font-size: 9px; }
-  .prob-label { font-size: 7px; }
   .badge { font-size: 8px; padding: 1px 4px; }
 }
 
