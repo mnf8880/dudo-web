@@ -14,47 +14,59 @@
 
 <div class="main-container">
 
-  <!-- Panel 1: Dados en juego -->
-  <div class="panel">
-    <div class="panel-title"><span class="panel-num">1</span> Dados en juego</div>
-    <div class="total-dice-control">
-      <button class="arrow-btn" id="totalUp" aria-label="Aumentar el total de dados en juego">⇧</button>
-      <div class="total-number" id="totalDiceDisplay" aria-live="polite">24</div>
-      <button class="arrow-btn" id="totalDown" aria-label="Disminuir el total de dados en juego">⇩</button>
-    </div>
-  </div>
+  <div class="top-row">
 
-  <!-- Panel 2: Mis dados -->
-  <div class="panel">
-    <div class="panel-title"><span class="panel-num">2</span> Mis dados</div>
-    <div class="mydice-grid" id="myDiceGrid"></div>
-  </div>
-
-  <!-- Panel 3: Jugada actual -->
-  <div class="panel">
-    <div class="panel-title"><span class="panel-num">3</span> Jugada actual</div>
-    <div class="current-play-control">
-      <button class="arrow-btn" id="qtyUp" aria-label="Aumentar la cantidad de la jugada actual">⇧</button>
-      <div class="current-qty" id="currentQtyDisplay" aria-live="polite">8</div>
-      <button class="arrow-btn" id="qtyDown" aria-label="Disminuir la cantidad de la jugada actual">⇩</button>
-    </div>
-    <div class="face-selector" id="faceSelector"></div>
-
-    <div class="dist-chart-wrapper">
-      <div class="dist-chart-label">Distribución alrededor de la jugada</div>
-      <div class="dist-chart" id="distChart"></div>
-    </div>
-
-    <div class="results-box" aria-live="polite">
-      <div class="result-row">
-        <span class="label"><span class="status-dot" id="dotSin"></span> Sin tus dados</span>
-        <span class="result-pct" id="pctSin">0%</span>
-      </div>
-      <div class="result-row">
-        <span class="label"><span class="status-dot" id="dotCon"></span> Con tus dados</span>
-        <span class="result-pct" id="pctCon">0%</span>
+    <!-- Panel 1: Dados en juego -->
+    <div class="panel">
+      <div class="panel-title"><span class="panel-num">1</span> Dados en juego</div>
+      <div class="total-dice-control">
+        <button class="arrow-btn" id="totalUp" aria-label="Aumentar el total de dados en juego">
+          <span class="arrow-icon up" aria-hidden="true"></span>
+        </button>
+        <div class="total-number" id="totalDiceDisplay" aria-live="polite">24</div>
+        <button class="arrow-btn" id="totalDown" aria-label="Disminuir el total de dados en juego">
+          <span class="arrow-icon down" aria-hidden="true"></span>
+        </button>
       </div>
     </div>
+
+    <!-- Panel 2: Mis dados -->
+    <div class="panel">
+      <div class="panel-title"><span class="panel-num">2</span> Mis dados</div>
+      <div class="mydice-grid" id="myDiceGrid"></div>
+    </div>
+
+    <!-- Panel 3: Jugada actual -->
+    <div class="panel">
+      <div class="panel-title"><span class="panel-num">3</span> Jugada actual</div>
+      <div class="current-play-control">
+        <button class="arrow-btn" id="qtyUp" aria-label="Aumentar la cantidad de la jugada actual">
+          <span class="arrow-icon up" aria-hidden="true"></span>
+        </button>
+        <div class="current-qty" id="currentQtyDisplay" aria-live="polite">8</div>
+        <button class="arrow-btn" id="qtyDown" aria-label="Disminuir la cantidad de la jugada actual">
+          <span class="arrow-icon down" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="face-selector" id="faceSelector"></div>
+
+      <div class="dist-chart-wrapper">
+        <div class="dist-chart-label">Distribución alrededor de la jugada</div>
+        <div class="dist-chart" id="distChart"></div>
+      </div>
+
+      <div class="results-box" aria-live="polite">
+        <div class="result-row">
+          <span class="label"><span class="status-dot" id="dotCon"></span> Con tus dados</span>
+          <span class="result-pct" id="pctCon">0%</span>
+        </div>
+        <div class="result-row">
+          <span class="label"><span class="status-dot" id="dotSin"></span> Sin tus dados</span>
+          <span class="result-pct" id="pctSin">0%</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Panel 4: Posibles respuestas -->
